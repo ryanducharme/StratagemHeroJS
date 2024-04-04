@@ -91,6 +91,7 @@ const STRATAGEMS = [
   }
 ]
 
+
 const missionStratagems = filterByCategory("Mission");
 const orbitalStratagems = filterByCategory("Offensive: Orbital");
 const eagleStratagems = filterByCategory("Offensive: Eagle");
@@ -108,16 +109,63 @@ let ui_current_stratagem_name = document.getElementById("current_stratagem_name"
 let ui_highest_streak = document.getElementById("record");
 let ui_timer = document.getElementById("timer");
 let stratagem_spans_container = document.getElementById("stratagem_spans_container");
+let audio = document.getElementById("audio");
+
+let lastFrameTime = performance.now();
+let gameOver = false;
+let timer = 10;
 
 var userInput = [];
 var currentStratagem = selectedStratagems[0];
 
+var sound = new Audio('minimal-pop-click-ui-1-198301.mp3');
+var wrongInput = new Audio('buzzer-or-wrong-answer-20582.mp3');
 
 ui_current_stratagem_name.textContent = `${currentStratagem.name}`
 update_stratagem_code_ui();
 
 
-
+window.addEventListener(
+  "keydown",
+  (event) => {
+    var key = event.key;
+    console.log(key);
+    if (gameOver == false) {
+      switch (key) {
+        case "w":
+          console.log("User Input: w");
+          userInput.push(key);
+          checkSuccessfulInput();
+          break;
+        case "a":
+          console.log("User Input: a");
+          userInput.push(key);
+          checkSuccessfulInput();
+          break;
+        case "s":
+          console.log("User Input: s");
+          userInput.push(key);
+          checkSuccessfulInput();
+          break;
+        case "d":
+          console.log("User Input: d");
+          userInput.push(key);
+          checkSuccessfulInput();
+          break;
+      }
+    }
+    if (key == " ") {
+      reset();
+    }
+    //ui_input.innerHTML = convertWASDToArrows(userInput.toString());
+    ui_streak.textContent = `Streak: ${streak}`;
+    ui_current_stratagem_name.textContent = `${currentStratagem.name}`;
+    ui_highest_streak.innerText = `Record: ${highestStreak}`
+    //ui_strat.innerHTML = convertWASDToArrows(currentStratagem.code);
+    //document.getElementById("output").appendChild(p);
+  },
+  true,
+);
 
 function filterByCategory(category) {
   return STRATAGEMS.filter(stratagem => stratagem.category === category);
@@ -171,7 +219,7 @@ function checkSuccessfulInput() {
     var spans = document.querySelectorAll('#stratagem_spans_container span');
     console.log(spans.length);
     spans[userInput.length - 1].className = "correct";
-
+    sound.cloneNode().play();
     if (JSON.stringify(userInput.toString()) === JSON.stringify(code.toString())) {
 
       let rand = Math.floor(Math.random() * selectedStratagems.length);
@@ -192,64 +240,14 @@ function checkSuccessfulInput() {
     // ui_strat.innerHTML = currentStratagem.code;
     update_stratagem_code_ui();
     console.log(currentStratagem.code);
-
+    wrongInput.cloneNode().play();
     userInput = [];
     streak = 0;
     timer -= 1;
   }
 }
 
-window.addEventListener(
-  "keydown",
-  (event) => {
-    var key = event.key;
-    console.log(key);
-    if (gameOver == false) {
-      switch (key) {
-        case "w":
-          console.log("User Input: w");
-          userInput.push(key);
-          checkSuccessfulInput();
-          break;
-        case "a":
-          console.log("User Input: a");
-          userInput.push(key);
-          checkSuccessfulInput();
-          break;
-        case "s":
-          console.log("User Input: s");
-          userInput.push(key);
-          checkSuccessfulInput();
-          break;
-        case "d":
-          console.log("User Input: d");
-          userInput.push(key);
-          checkSuccessfulInput();
-          break;
-      }
-    }
-    if (key == " ") {
-      reset();
-    }
-    //ui_input.innerHTML = convertWASDToArrows(userInput.toString());
-    ui_streak.textContent = `Streak: ${streak}`;
-    ui_current_stratagem_name.textContent = `${currentStratagem.name}`;
-    ui_highest_streak.innerText = `Record: ${highestStreak}`
-    //ui_strat.innerHTML = convertWASDToArrows(currentStratagem.code);
-    //document.getElementById("output").appendChild(p);
-  },
-  true,
-);
-
-let lastFrameTime = performance.now();
-let gameOver = false;
-
-let timer = 10;
-
 function gameLoop() {
-  // if (gameOver) {
-  //   return;
-  // }
 
   const currentTime = performance.now();
   const deltaTime = (currentTime - lastFrameTime) / 1000; // Convert milliseconds to seconds
@@ -265,28 +263,26 @@ function gameLoop() {
 }
 
 function updateGameState(deltaTime) {
-  var time
+  var time;
 
-  if(!gameOver) {
-    var time = timer -= deltaTime
+  if (!gameOver) {
+    time = timer -= deltaTime
 
     if (time <= 0) {
       time = 0.00;
       gameOver = true;
     }
   }
-  
+  else {
+    time = 0.00;
+  }
+
 
   ui_timer.innerText = parseFloat(time).toPrecision(3);
 }
 
 function renderGame() {
   // Render game graphics
-}
-
-function handleKeyDown(event) {
-  // Handle keydown events
-  console.log('Key pressed:', event.key);
 }
 
 function reset() {

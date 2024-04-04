@@ -1,0 +1,2 @@
+Delete the html elements when the game is over and replace when it is reset
+Flash on the screen that the game is over and to press space to reset
