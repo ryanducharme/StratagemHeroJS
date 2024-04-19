@@ -151,8 +151,13 @@ let ui_current_stratagem_name = document.getElementById("current_stratagem_name"
 let ui_highest_streak = document.getElementById("record");
 let ui_timer = document.getElementById("timer");
 let stratagem_spans_container = document.getElementById("stratagem_spans_container");
+<<<<<<< HEAD
 
 //let audio = document.getElementById("audio");
+=======
+let inputElements = document.getElementsByTagName('input');
+let audio = document.getElementById("audio");
+>>>>>>> d3cdbaf0075d668acd702ec3029d0c982ef33212
 
 let lastFrameTime = performance.now();
 let gameOver = false;
@@ -162,6 +167,7 @@ let timer = 10;
 var userInput = [];
 var currentStratagem = selectedStratagems[0];
 
+<<<<<<< HEAD
 // var sound = new Audio('minimal-pop-click-ui-1-198301.mp3');
 // var wrongInput = new Audio('buzzer-or-wrong-answer-20582.mp3');
 
@@ -172,6 +178,34 @@ var currentStratagem = selectedStratagems[0];
 ui_current_stratagem_name.textContent = `${currentStratagem.name}`
 update_stratagem_code_ui();
 
+=======
+var sound = new Audio('minimal-pop-click-ui-1-198301.mp3');
+var wrongInput = new Audio('buzzer-or-wrong-answer-20582.mp3');
+ui_current_stratagem_name.textContent = `${currentStratagem.name}`
+update_stratagem_code_ui();
+
+//assign an event handle to all of the input tags (these hold the stratagem optons + others)
+for (let i = 0; i < inputElements.length; i++) {
+  const element = inputElements[i];
+  element.addEventListener("change", handle_options);
+}
+
+function handle_options(event) {
+  var newOptions;
+  //on value change, check if the box is checked, if yes - push
+  console.log(typeof(selectedStratagems));;
+  switch (event.target.name) {
+    case "mission_stratagems":
+      if(event.target.checked) {
+        console.log(event.target.name);
+        selectedStratagems(filterByCategory("Mission"));
+      }
+  }
+  
+}
+
+
+>>>>>>> d3cdbaf0075d668acd702ec3029d0c982ef33212
 window.addEventListener(
   "keydown",
   (event) => {
@@ -349,6 +383,7 @@ function updateGameState(deltaTime) {
   }
   else {
     time = 0.00;
+    
   }
 
 
