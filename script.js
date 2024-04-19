@@ -151,10 +151,7 @@ let ui_current_stratagem_name = document.getElementById("current_stratagem_name"
 let ui_highest_streak = document.getElementById("record");
 let ui_timer = document.getElementById("timer");
 let stratagem_spans_container = document.getElementById("stratagem_spans_container");
-<<<<<<< HEAD
 
-//let audio = document.getElementById("audio");
-=======
 let inputElements = document.getElementsByTagName('input');
 let audio = document.getElementById("audio");
 >>>>>>> d3cdbaf0075d668acd702ec3029d0c982ef33212
@@ -166,13 +163,6 @@ let timer = 10;
 
 var userInput = [];
 var currentStratagem = selectedStratagems[0];
-
-<<<<<<< HEAD
-// var sound = new Audio('minimal-pop-click-ui-1-198301.mp3');
-// var wrongInput = new Audio('buzzer-or-wrong-answer-20582.mp3');
-
-
-
 
 
 ui_current_stratagem_name.textContent = `${currentStratagem.name}`
@@ -204,8 +194,6 @@ function handle_options(event) {
   
 }
 
-
->>>>>>> d3cdbaf0075d668acd702ec3029d0c982ef33212
 window.addEventListener(
   "keydown",
   (event) => {
