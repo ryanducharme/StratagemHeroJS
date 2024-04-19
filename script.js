@@ -154,7 +154,7 @@ let stratagem_spans_container = document.getElementById("stratagem_spans_contain
 
 let inputElements = document.getElementsByTagName('input');
 let audio = document.getElementById("audio");
->>>>>>> d3cdbaf0075d668acd702ec3029d0c982ef33212
+
 
 let lastFrameTime = performance.now();
 let gameOver = false;
@@ -168,7 +168,7 @@ var currentStratagem = selectedStratagems[0];
 ui_current_stratagem_name.textContent = `${currentStratagem.name}`
 update_stratagem_code_ui();
 
-=======
+
 var sound = new Audio('minimal-pop-click-ui-1-198301.mp3');
 var wrongInput = new Audio('buzzer-or-wrong-answer-20582.mp3');
 ui_current_stratagem_name.textContent = `${currentStratagem.name}`
