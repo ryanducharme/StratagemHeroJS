@@ -2,93 +2,123 @@ const STRATAGEMS = [
   {
     name: "Reinforce",
     code: "WSDAW",
-    category: "Mission"
+    category: "Mission",
+    enabled: false
   },
   {
     name: "SOS Beacon",
     code: "WSDW",
-    category: "Mission"
+    category: "Mission",
+    enabled: false
   },
   {
     name: "Resupply",
     code: "SSWD",
-    category: "Mission"
+    category: "Mission",
+    enabled: false
   },
   {
     name: "Hellbomb",
     code: "SWASWDSW",
-    category: "Mission"
+    category: "Mission",
+    enabled: true
   },
   {
     name: "SSSD Delivery",
     code: "WSDW",
-    category: "Mission"
+    category: "Mission",
+    enabled: true
   },
   {
     name: "Seismic Probe",
     code: "WWADSS",
-    category: "Mission"
+    category: "Mission",
+    enabled: true
   },
   {
     name: "Upload Data",
     code: "SSWWW",
-    category: "Mission"
+    category: "Mission",
+    enabled: true
   },
   {
     name: "SEAF Artillery",
     code: "DWWS",
-    category: "Mission"
+    category: "Mission",
+    enabled: true
   },
   {
     name: "Super Earth Flag",
     code: "SWSW",
-    category: "Mission"
+    category: "Mission",
+    enabled: true
   },
   {
     name: "Orbital Strike",
     code: "WWD",
-    category: "Offensive: Orbital"
+    category: "Offensive: Orbital",
+    enabled: true
   },
   {
     name: "Eagle Rearm",
     code: "WWAWD",
-    category: "Mission"
+    category: "Mission",
+    enabled: true
   },
   {
     name: "Eagle Strafing Run",
     code: "WDD",
-    category: "Offensive: Eagle"
+    category: "Offensive: Eagle",
+    enabled: true
   },
   {
     name: "Eagle Airstrike",
     code: "WDSD",
-    category: "Offensive: Eagle"
+    category: "Offensive: Eagle",
+    enabled: true
   },
   {
     name: "Eagle Cluster Bomb",
     code: "WDSSD",
-    category: "Offensive: Eagle"
+    category: "Offensive: Eagle",
+    enabled: true
   },
   {
     name: "Eagle Napalm Strike",
     code: "WDSW",
-    category: "Offensive: Eagle"
+    category: "Offensive: Eagle",
+    enabled: true
   },
   {
     name: "Eagle Smoke Strike",
     code: "WDWS",
-    category: "Offensive: Eagle"
+    category: "Offensive: Eagle",
+    enabled: true
   },
   {
     name: "Eagle 110MM Rocket Pods",
     code: "WDWA",
-    category: "Offensive: Eagle"
+    category: "Offensive: Eagle",
+    enabled: true
   },
   {
     name: "Eagle 500kg Bomb",
     code: "WDSSS",
-    category: "Offensive: Eagle"
-  }
+    category: "Offensive: Eagle",
+    enabled: true
+  },
+  {
+    name: "A/M-12 Mortar Sentry",
+    code: "SWDDS",
+    category: "Defensive",
+    enabled: true
+  },
+  {
+    name: "A/MG-43 Machine Gun Sentry",
+    code: "SWDDW",
+    category: "Defensive",
+    enabled: true
+  },
 ]
 
 
@@ -96,10 +126,22 @@ const missionStratagems = filterByCategory("Mission");
 const orbitalStratagems = filterByCategory("Offensive: Orbital");
 const eagleStratagems = filterByCategory("Offensive: Eagle");
 
-var selectedStratagems = missionStratagems;
+
+//all of the stratagems are enabled by default
+enableByCategory("all");
+var selectedStratagems = getEnabledStratagems();
+
+
+console.log(selectedStratagems);
 
 var streak = 0;
 var highestStreak = 0;
+
+let checkboxes = document.querySelectorAll('input');
+checkboxes = [...checkboxes];
+checkboxes.forEach(element => {
+  element.addEventListener('change', handleCheckboxOptions);
+});
 
 
 let ui_strat = document.getElementById("current_stratagem");
@@ -109,21 +151,26 @@ let ui_current_stratagem_name = document.getElementById("current_stratagem_name"
 let ui_highest_streak = document.getElementById("record");
 let ui_timer = document.getElementById("timer");
 let stratagem_spans_container = document.getElementById("stratagem_spans_container");
-let audio = document.getElementById("audio");
+
+//let audio = document.getElementById("audio");
 
 let lastFrameTime = performance.now();
 let gameOver = false;
 let timer = 10;
 
+
 var userInput = [];
 var currentStratagem = selectedStratagems[0];
 
-var sound = new Audio('minimal-pop-click-ui-1-198301.mp3');
-var wrongInput = new Audio('buzzer-or-wrong-answer-20582.mp3');
+// var sound = new Audio('minimal-pop-click-ui-1-198301.mp3');
+// var wrongInput = new Audio('buzzer-or-wrong-answer-20582.mp3');
+
+
+
+
 
 ui_current_stratagem_name.textContent = `${currentStratagem.name}`
 update_stratagem_code_ui();
-
 
 window.addEventListener(
   "keydown",
@@ -167,8 +214,33 @@ window.addEventListener(
   true,
 );
 
+function getEnabledStratagems() {
+  return STRATAGEMS.filter(stratagem => stratagem.enabled === true);
+}
+
 function filterByCategory(category) {
-  return STRATAGEMS.filter(stratagem => stratagem.category === category);
+  return STRATAGEMS.filter(stratagem => {
+    if (stratagem.category === category) {
+    }
+  });
+}
+
+function enableByCategory(category) {
+  STRATAGEMS.map(stratagem => {
+    if (category == "all") {
+      stratagem.enabled = true;
+    } else if (stratagem.category === category) {
+      stratagem.enabled = true;
+    }
+  });
+}
+
+function disableByCategory(category) {
+  STRATAGEMS.map(stratagem => {
+    if (stratagem.category === category) {
+      stratagem.enabled = false;
+    }
+  });
 }
 
 function update_stratagem_code_ui() {
@@ -219,9 +291,11 @@ function checkSuccessfulInput() {
     var spans = document.querySelectorAll('#stratagem_spans_container span');
     console.log(spans.length);
     spans[userInput.length - 1].className = "correct";
-    sound.cloneNode().play();
-    if (JSON.stringify(userInput.toString()) === JSON.stringify(code.toString())) {
+    //sound.cloneNode().play();
 
+    //if the code is correct, react accordingly.
+    if (JSON.stringify(userInput.toString()) === JSON.stringify(code.toString())) {
+      flashCorrectBackground();
       let rand = Math.floor(Math.random() * selectedStratagems.length);
       currentStratagem = selectedStratagems[rand];
 
@@ -233,14 +307,16 @@ function checkSuccessfulInput() {
       if (streak > highestStreak) {
         highestStreak = streak;
       }
+      
     }
     return true;
 
   } else {
     // ui_strat.innerHTML = currentStratagem.code;
+    flashIncorrectBackground()
     update_stratagem_code_ui();
     console.log(currentStratagem.code);
-    wrongInput.cloneNode().play();
+    //wrongInput.cloneNode().play();
     userInput = [];
     streak = 0;
     timer -= 1;
@@ -253,8 +329,6 @@ function gameLoop() {
   const deltaTime = (currentTime - lastFrameTime) / 1000; // Convert milliseconds to seconds
 
   updateGameState(deltaTime);
-
-  renderGame();
 
   lastFrameTime = currentTime;
 
@@ -281,10 +355,6 @@ function updateGameState(deltaTime) {
   ui_timer.innerText = parseFloat(time).toPrecision(3);
 }
 
-function renderGame() {
-  // Render game graphics
-}
-
 function reset() {
   timer = 10;
   streak = 0;
@@ -294,5 +364,69 @@ function reset() {
 
 }
 
+function flashCorrectBackground() {
+  var output = document.getElementById('output');
+  output.classList.add("correctInputAnimation");
+  
+  setTimeout(function() {
+    output.classList.remove("correctInputAnimation");
+  }, 300)  
+}
+
+function flashIncorrectBackground() {
+  var output = document.getElementById('output');
+  output.classList.add("incorrectInputAnimation");
+  
+  setTimeout(function() {
+    output.classList.remove("incorrectInputAnimation");
+  }, 500)  
+}
+
+function handleCheckboxOptions(event) {
+  //if I click a checkbox, figure out which was clicked and add them to the list
+  console.log(event);
+  console.log(event.target.id);
+
+  let newSelections = [];
+  switch (event.target.id) {
+    case "mission_stratagems":
+      if (event.target.checked) {
+        enableByCategory("Mission");
+      } else {
+        disableByCategory("Mission");
+      }
+      break;
+
+    case "defensive_stratagems":
+      if (event.target.checked) {
+        enableByCategory("Defensive");
+      } else {
+        disableByCategory("Defensive");
+      }
+      break;
+
+    case "orbital_stratagems":
+      if (event.target.checked) {
+        enableByCategory("Offensive: Orbital");
+      } else {
+        disableByCategory("Offensive: Orbital");
+      }
+      break;
+
+    case "eagle_stratagems":
+      if (event.target.checked) {
+        enableByCategory("Offensive: Eagle");
+
+      } else {
+        disableByCategory("Offensive: Eagle");
+      }
+      break;
+
+    default:
+      break;
+  }
+  selectedStratagems = getEnabledStratagems();
+  console.log(selectedStratagems);
+}
 // Start the game loop
 gameLoop();

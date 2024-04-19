@@ -24,6 +24,37 @@
 
     }
 
+    .correctInputAnimation {
+      animation: correctFlashAnimation 0.3s infinite alternate;
+      /* Flashing animation */
+    }
+
+    @keyframes correctFlashAnimation {
+      from {
+        background-color: #c4c4c4;
+      }
+
+      to {
+        background-color: rgb(36, 177, 36);
+      }
+    }
+
+
+    .incorrectInputAnimation {
+      animation: incorrectFlashAnimation 0.3s infinite alternate;
+      /* Flashing animation */
+    }
+
+    @keyframes incorrectFlashAnimation {
+      from {
+        background-color: #c4c4c4;
+      }
+
+      to {
+        background-color: rgb(216, 70, 70);
+      }
+    }
+
     #output {
       background-color: #c4c4c4;
       /* White background for output */
@@ -79,8 +110,7 @@
   <div class="container">
     <h1 class="mb-4">STRATAGEM HERO</h1> <!-- mb-4 adds margin-bottom -->
   </div>
-  <p id="instructions">How to play: press the corresponding keys (wasd) to input the stratagem code, use spacebar to
-    reset.</p>
+  <p id="instructions">How to play: Press the corresponding keys (wasd) to input the stratagem code, use spacebar to reset.</p>
 
   <div class="container-sm">
 
@@ -93,11 +123,13 @@
   </div>
   <div class="container" id="output">
     <div>
-      <p id="current_stratagem_name"></p>
-      <!-- <p id="current_stratagem"></p> -->
       <p id="timer">10:00</p>
       <div id="stratagem_spans_container">
       </div>
+      <p id="current_stratagem_name"></p>
+      <!-- <p id="current_stratagem"></p> -->
+      
+      
       <!-- <p id="user_input"></p>   -->
     </div>
 
@@ -108,16 +140,32 @@
         <div class="col-10">
           <div>
             <h4>Stratagems</h4>
-            <input type="checkbox" id="all_stratagems" name="all_stratagems" value="all_stratagems">
-            <label for="all_stratagems"> All</label>
-            <input type="checkbox" id="all_stratagems" name="all_stratagems" value="all_stratagems">
-            <label for="all_stratagems"> Mission</label>
-            <input type="checkbox" id="all_stratagems" name="all_stratagems" value="all_stratagems">
-            <label for="all_stratagems"> Defesive</label>
-            <input type="checkbox" id="all_stratagems" name="all_stratagems" value="all_stratagems">
-            <label for="all_stratagems"> Offensive: Orbital</label>
-            <input type="checkbox" id="all_stratagems" name="all_stratagems" value="all_stratagems">
-            <label for="all_stratagems"> Offensive: Eagle</label>
+            <!-- <input type="checkbox" id="all_stratagems" name="all_stratagems" value="all_stratagems">
+            <label for="all_stratagems"> All</label> -->
+
+            <input checked="true" type="checkbox" id="mission_stratagems" name="mission_stratagems"
+              value="mission_stratagems">
+            <label for="mission_stratagems"> Mission</label>
+
+            <input checked="true" type="checkbox" id="defensive_stratagems" name="defensive_stratagems"
+              value="defensive_stratagems">
+            <label for="defensive_stratagems"> Defensive</label>
+
+            <input checked="true" type="checkbox" id="orbital_stratagems" name="orbital_stratagems"
+              value="orbital_stratagems">
+            <label for="orbital_stratagems"> Offensive: Orbital</label>
+
+            <input checked="true" type="checkbox" id="eagle_stratagems" name="eagle_stratagems"
+              value="eagle_stratagems">
+            <label for="eagle_stratagems"> Offensive: Eagle</label>
+
+            <input checked="true" type="checkbox" id="supply_backpack_stratagems" name="supply_backpack_stratagems"
+              value="supply_backpack_stratagems">
+            <label for="supply_backpack_stratagems"> Supply: Support Backpacks</label>
+
+            <input checked="true" type="checkbox" id="supply_support_wep_stratagems"
+              name="supply_support_wep_stratagems" value="supply_support_wep_stratagems">
+            <label for="supply_support_wep_stratagems"> Supply: Support Weapons</label>
           </div>
         </div>
         <div class="col-6">
